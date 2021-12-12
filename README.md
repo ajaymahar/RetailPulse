@@ -29,12 +29,14 @@ If you want to quickly test the service
 >
 If you want to build the service
 
->```go build ./...```
+>```go build -o jobservice cmd/main.go```
 >
+> ```./jobservice```
 If you want to install it to your local machine as executable binary. (make sure you have added GOPATH to your PATH env var)
 
 >```go install cmd/main.go```
 
+> ```main <ENTER>```
 
 TO Test the endpoints you can clone the postman collections and import it.
 ## Postman via workspace
