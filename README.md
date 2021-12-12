@@ -19,6 +19,8 @@ Clone the git project
 
 >```cd RetailPulse```
 
+>```mkdir images```
+
 >```go mod tidy```
 >
 If you want to quickly test the service
@@ -58,3 +60,4 @@ Library: gorilla mux (https://github.com/gorilla/mux)
 * logging is missing in this service, can be implement logger for monitoring.
 * Unit test/Benchmarking are missing.
 * and some other missing parts...
+* Can make more configurable or access the required fields via ENV Var.
