@@ -1,0 +1,131 @@
+Retail Pulse wants to create a service to process thousands of images collected from stores.
+
+1. [The service receives the jobs with image URLs and store id](about:blank#1-submit-job)
+    
+    There can be multiple jobs with thousands of images each at a given time, a job can take few minutes to an hour to complete. Using the above API a user submits the job.
+    
+2. To process a job, the service downloads the images and calculates the perimeter `2* [Height+Width]` of each image. After calculating the perimeter of the image you need to have a **random sleep time of 0.1 to 0.4 secs** (this is to imitate GPU processing). After this, we store the results at an image level.
+3. Refer [Store Master](https://drive.google.com/file/d/1dCdAFEBzN1LVUUKxIZyewOeYx42PtEzb/view?usp=sharing) for the `store_id`, `store_name` and `area_code`
+4. Once the job is created, [Get Job Info](https://www.notion.so/Backend-Assignment-529d5850691d483db61c3561cfaa7293) API can check its status
+
+## 1. Submit Job
+
+Create a job to process the images collected from stores.
+
+**URL**: `/api/submit/`
+
+**Method**: `POST`
+
+**Request Payload**
+
+```
+{
+   "count":2,
+   "visits":[
+      {
+         "store_id":"S00339218",
+         "image_url":[
+            "https://www.gstatic.com/webp/gallery/2.jpg",
+            "https://www.gstatic.com/webp/gallery/3.jpg"
+         ],
+         "visit_time": "time of store visit"
+      },
+      {
+         "store_id":"S01408764",
+         "image_url":[
+            "https://www.gstatic.com/webp/gallery/3.jpg"
+         ],
+         "visit_time": "time of store visit"
+      }
+   ]
+}
+```
+
+### Success Response
+
+**Condition**: If everything is OK, and a job is created.
+
+**Code**: `201 CREATED`
+
+**Content example**
+
+```
+{    "job_id": 123}
+```
+
+### Error Responses
+
+**Condition**: If fields are missing OR count != len(visits)
+
+**Code**: `400 BAD REQUEST`
+
+**Content example**
+
+```
+{    "error": ""}
+```
+
+## 2. Get Job Info
+
+**URL** : `/api/status?jobid=123`
+
+**URL Parameters**: - `jobid` Job ID received while creating the job
+
+**Method**: `GET`
+
+### Success Response
+
+**Condition**: If everything is OK and jobID exists.
+
+**Code**: `200 OK`
+
+**Content example**
+
+- **job status**: completed / ongoing
+
+```
+{
+    "status": "completed",
+    "job_id": ""
+}
+```
+
+- **job status**: failed
+
+If a `store_id` does not exist or an image download fails for any given URL. The error message contains only the failed `store_id`
+
+```
+{
+    "status": "failed",
+    "job_id": "",
+    "error": [{
+         "store_id":"S00339218",
+         "error": ""
+      }]
+}
+```
+
+### Error Responses
+
+**Condition**: If `jobID` does not exist
+
+**Code**: `400 BAD REQUEST`
+
+**Content**
+
+```
+{}
+```
+
+## Project Requirements:
+
+- Application must be written in Go using Go Modules.
+- Write the project documentation containing:
+    - Description;
+    - Assumptions you took if any;
+    - Installing (setup) and testing instructions;
+    - If you provide a [docker](https://www.docker.com/) solution for setup, ensure it works without docker too.
+    - Brief description of the work environment used to run this project (Computer/operating system, text editor/IDE, libraries, etc).
+    - If given more time, what improvements will you do?
+
+**Have fun!**
