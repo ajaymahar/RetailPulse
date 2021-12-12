@@ -41,14 +41,14 @@ Library: gorilla mux (https://github.com/gorilla/mux)
 
 ## Improvements
 
-[] error handling can be improved via implement error wrapping.
-[] can be implemented using context package for default timeout or task cancellations.
-[] codebase can be organized in more simple format.
-[] could have implement API key/JWT functionality for authontication.
-[] Returned error to the end user could have been more descriptive and user friendly.
-[] code refactor could have done 
-[] request validation can be done in more robot way 
-[] api access limit could have been implemented (how frequently user/actor can req the api) 
-[] logging is missing in this service, can be implement logger for monitoring.
-[] Unit test/Benchmarking are missing.
-[] and some other missing parts...
+>[] error handling can be improved via implement error wrapping.
+>[] can be implemented using context package for default timeout or task cancellations.
+>[] codebase can be organized in more simple format.
+>[] could have implement API key/JWT functionality for authontication.
+>[] Returned error to the end user could have been more descriptive and user friendly.
+>[] code refactor could have done 
+>[] request validation can be done in more robot way 
+>[] api access limit could have been implemented (how frequently user/actor can req the api) 
+>[] logging is missing in this service, can be implement logger for monitoring.
+>[] Unit test/Benchmarking are missing.
+>[] and some other missing parts...
