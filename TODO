@@ -1,8 +1,0 @@
-[] implement error wrapping
-[] use context package for default timeout
-[] some other stuff
-[] could have implement API key/JWT functionality for authontication
-[] Returned error to the end user could have been more descriptive
-[] more code refactor could have done 
-[] could have validated valid url/store_id format/len
-[] api access limit could have been implemented (how frequently user/actor can req the api) 

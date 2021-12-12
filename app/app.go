@@ -14,7 +14,10 @@ import (
 func Start() {
 
 	//wiring the app
+	// could be replaced with real DB
 	repo := datastore.NewJobRepositoryStub()
+
+	// Service port
 	svc := service.NewDefaultJobService(repo)
 
 	// mux router

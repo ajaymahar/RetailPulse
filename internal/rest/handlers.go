@@ -53,7 +53,6 @@ func (jh *JobHandler) Register(r *mux.Router) {
 	subR.HandleFunc("/submit", jh.ValidatePayload(jh.createJob)).Methods("POST")
 
 	subR.HandleFunc("/status", jh.getJobStatus).Queries("job_id", "{job_id}").Methods("GET")
-	subR.HandleFunc("/jobs", jh.getAllJobs).Methods("GET")
 
 }
 
@@ -76,7 +75,7 @@ func (jh *JobHandler) createJob(rw http.ResponseWriter, r *http.Request) {
 	job, err := jh.svc.CreateJob(j)
 	if err != nil {
 		log.Println(err)
-		renderErrorResponse(rw, "internal server error", http.StatusInternalServerError)
+		renderErrorResponse(rw, err.Error(), http.StatusBadRequest)
 		return
 
 	}
@@ -84,24 +83,6 @@ func (jh *JobHandler) createJob(rw http.ResponseWriter, r *http.Request) {
 		JobID: job.JobID,
 	}, http.StatusCreated)
 
-}
-
-// TODO: find a way to response all the jobs using renderResponse helper func
-func (jh *JobHandler) getAllJobs(rw http.ResponseWriter, r *http.Request) {
-
-	jobs, err := jh.svc.GetAllJobs()
-	if err != nil {
-		log.Println(err)
-		renderErrorResponse(rw, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	rw.Header().Set("Content-Type", "application/json")
-	if err := json.NewEncoder(rw).Encode(jobs); err != nil {
-
-		log.Println(err)
-		renderErrorResponse(rw, err.Error(), http.StatusInternalServerError)
-		return
-	}
 }
 
 // Validate payload data in this middle ware
@@ -175,6 +156,23 @@ func (jh *JobHandler) getJobStatus(rw http.ResponseWriter, r *http.Request) {
 		// used StatusBadRequest as per given instructions in assignment
 		// renderErrorResponse(rw, err.Error(), http.StatusBadRequest)
 		renderResponse(rw, EmptyResponse{}, http.StatusBadRequest)
+
+		return
+	}
+	if job.Error != nil {
+		log.Println(job.Error.Error())
+
+		renderResponse(rw, &internal.JobError{
+			Status: job.Status,
+			JobID:  job.JobID,
+			Err: []internal.StoreError{
+				{
+					StoreID: job.StoreID,
+					// SErr:    job.Error.Error(),
+					SErr: "invalid image url ",
+				},
+			},
+		}, http.StatusOK)
 		return
 	}
 
